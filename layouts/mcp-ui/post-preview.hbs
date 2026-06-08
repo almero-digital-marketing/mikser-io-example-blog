@@ -1,0 +1,21 @@
+---
+match: "@/blog/*"
+mcpUi:
+  mode: preview
+  description: "Read-only preview of a blog essay. Renders the article in B#tter Truth's voice — no controls. Use when the agent wants to show the user what an essay looks like without asking for an action."
+  actions: []
+  sandbox: []
+---
+<style>{{{readFile "files/shared/styles/mcp-ui.css"}}}</style>
+<div class="mcp-ui-container">
+    <header class="mcp-ui-header">
+        <h1>{{document.meta.title}}</h1>
+        <div class="meta">
+            by B#tter Truth · {{date document.meta.date 'MMMM D, YYYY'}}
+            {{#if document.meta.tags}} · {{#each document.meta.tags}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+        </div>
+    </header>
+    <div class="mcp-ui-body">
+        {{{markdown document.content}}}
+    </div>
+</div>

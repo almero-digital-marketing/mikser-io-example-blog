@@ -1,0 +1,48 @@
+---
+match: "@/blog/*"
+mcpUi:
+  mode: approval
+  description: "Editorial approval for a blog essay. Renders the article with Approve / Reject / Request changes buttons. For 'Request changes', the payload includes a free-text note. The canonical loop for verifying AI-proposed edits one essay at a time."
+  actions: [approve, reject, request-changes]
+  sandbox: [allow-scripts]
+---
+<style>{{{readFile "files/shared/styles/mcp-ui.css"}}}</style>
+<div class="mcp-ui-container">
+    <header class="mcp-ui-header">
+        <h1>{{document.meta.title}}</h1>
+        <div class="meta">
+            by B#tter Truth · {{date document.meta.date 'MMMM D, YYYY'}}
+            {{#if document.meta.status}} · <em>{{document.meta.status}}</em>{{/if}}
+        </div>
+    </header>
+
+    <div class="mcp-ui-body">
+        {{{markdown document.content}}}
+    </div>
+
+    <div class="mcp-ui-actions" role="group" aria-label="Review actions">
+        <button class="approve" data-action="approve">Approve</button>
+        <button class="reject"  data-action="reject">Reject</button>
+        <button class="neutral" data-action="request-changes">Request changes…</button>
+
+        <details>
+            <summary>Optional note</summary>
+            <textarea id="note" placeholder="Only sent if you click 'Request changes'."></textarea>
+        </details>
+    </div>
+</div>
+
+<script>
+    // The shell (ui://mikser/preview-ui-shell) provides window.sendAction.
+    // Layouts only have to wire DOM clicks to it. No protocol code needed —
+    // the shell handles ui/initialize and the tools/call relay to mikser_ui_action.
+    document.querySelectorAll('[data-action]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var action = btn.dataset.action;
+            var payload = action === 'request-changes'
+                ? { note: document.getElementById('note').value }
+                : {};
+            sendAction(action, payload);
+        });
+    });
+</script>

@@ -1,0 +1,9 @@
+node_modules/
+out/
+runtime/
+.env
+*.db
+*.db-journal
+
+# files/shared is cloned by postinstall — not committed to this repo
+files/shared/

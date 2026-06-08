@@ -1,0 +1,77 @@
+---
+match: "@/blog/*"
+mcpUi:
+  mode: edit
+  description: "Inline edit form for a blog essay's frontmatter (title, summary, tags, status). The form computes the diff against initial values on submit and sends only the changed fields as payload — see the diff-on-submit pattern. Use when the user wants to fine-tune metadata without asking the agent to rewrite."
+  actions: [save, cancel]
+  sandbox: [allow-scripts]
+---
+<style>{{{readFile "files/shared/styles/mcp-ui.css"}}}</style>
+<div class="mcp-ui-container">
+    <header class="mcp-ui-header">
+        <h1>Edit essay metadata</h1>
+        <div class="meta">{{document.id}}</div>
+    </header>
+
+    <form id="edit-form" class="mcp-ui-form">
+        <label>
+            <span class="label">Title</span>
+            <input name="title" value="{{document.meta.title}}" />
+        </label>
+        <label>
+            <span class="label">Summary</span>
+            <textarea name="summary" rows="3">{{document.meta.summary}}</textarea>
+        </label>
+        <label>
+            <span class="label">Tags (comma-separated)</span>
+            <input name="tags" value="{{#each document.meta.tags}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}" />
+        </label>
+        <label>
+            <span class="label">Status</span>
+            <select name="status">
+                <option value="draft"     {{#if (eq document.meta.status "draft")}}selected{{/if}}>draft</option>
+                <option value="published" {{#if (eq document.meta.status "published")}}selected{{/if}}>published</option>
+            </select>
+        </label>
+    </form>
+
+    <div class="mcp-ui-actions" role="group">
+        <button class="accent"  data-action="save">Save changes</button>
+        <button class="neutral" data-action="cancel">Cancel</button>
+    </div>
+</div>
+
+<script>
+    // The shell (ui://mikser/preview-ui-shell) provides window.sendAction.
+    // Layouts only have to wire DOM clicks to it. No protocol code needed.
+    var initial = {
+        title:   {{{json document.meta.title}}},
+        summary: {{{json (or document.meta.summary "")}}},
+        tags:    {{{json (default document.meta.tags (array))}}}.join(', '),
+        status:  {{{json (or document.meta.status "draft")}}},
+    };
+    function diff(current) {
+        var out = {};
+        for (var k in initial) {
+            if (current[k] !== initial[k]) out[k] = current[k];
+        }
+        // Tags come back as a string from FormData; re-parse to array if changed.
+        if ('tags' in out) {
+            out.tags = out.tags.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+        }
+        return out;
+    }
+    document.querySelectorAll('[data-action]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var action = btn.dataset.action;
+            var payload = {};
+            if (action === 'save') {
+                var fd = new FormData(document.getElementById('edit-form'));
+                var current = {};
+                fd.forEach(function (v, k) { current[k] = v; });
+                payload = diff(current);
+            }
+            sendAction(action, payload);
+        });
+    });
+</script>

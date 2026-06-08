@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{document.meta.name}} · B#tter Truth</title>
+    <link rel="stylesheet" href="/shared/styles/base.css">
+    <link rel="stylesheet" href="/shared/styles/components.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="byline">
+            <a href="/">← Back to index</a>
+        </nav>
+
+        <article>
+            <header>
+                <h1>{{document.meta.name}}</h1>
+                {{#if document.meta.role}}
+                    <div class="byline">{{document.meta.role}}</div>
+                {{/if}}
+            </header>
+
+            <div class="body">
+                {{{markdown document.meta.about}}}
+            </div>
+        </article>
+    </div>
+    <script type="module" src="/live-reload.js"></script>
+</body>
+</html>

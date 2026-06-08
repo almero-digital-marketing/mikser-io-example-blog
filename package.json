@@ -1,0 +1,30 @@
+{
+  "name": "mikser-io-example-blog",
+  "version": "0.1.0",
+  "description": "A working mikser project demonstrating AI agent integration flows through a small philosophical blog.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start":          "mikser --watch --server 3001 --debug",
+    "build":          "mikser",
+    "clean":          "mikser --clear",
+    "register-mcp":   "node scripts/register-mcp.js",
+    "unregister-mcp": "node scripts/register-mcp.js --unregister",
+    "postinstall":    "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
+  },
+  "dependencies": {
+    "mikser-io": "^8.2.0",
+    "mikser-io-mcp": "^0.2.0",
+    "mikser-io-render-markdown": "^3.2.0",
+    "mikser-io-schemas": "^0.6.0",
+    "mikser-io-vector": "^1.3.0",
+    "mikser-io-sdk-api": "^3.3.0",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/almero-digital-marketing/mikser-io-example-blog.git"
+  }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B#tter Truth · Essays{{#if (gt entity.page 1)}} · Page {{entity.page}}{{/if}}</title>
+    <link rel="stylesheet" href="/shared/styles/base.css">
+    <link rel="stylesheet" href="/shared/styles/components.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>B#tter Truth</h1>
+            <p class="byline">
+                Essays on content, software, and what changes when AI agents
+                become first-class readers and writers of both.
+            </p>
+        </header>
+
+        <hr>
+
+        <h2>Essays{{#if (gt entity.pages 1)}} <small>· Page {{entity.page}} of {{entity.pages}}</small>{{/if}}</h2>
+
+        <ul class="post-list">
+            {{!-- entity.page is 1-indexed; data.posts is 0-indexed. --}}
+            {{#each (lookup data.posts (subtract entity.page 1))}}
+                <li>
+                    <a class="title" href="{{this.url}}">{{this.meta.title}}</a>
+                    {{#if this.meta.summary}}
+                        <p class="summary">{{this.meta.summary}}</p>
+                    {{/if}}
+                    <span class="meta">
+                        {{date this.meta.date 'MMMM D, YYYY'}}
+                        <span class="status-badge {{this.meta.status}}">{{this.meta.status}}</span>
+                    </span>
+                </li>
+            {{/each}}
+        </ul>
+
+        {{#if (gt entity.pages 1)}}
+            <nav class="pagination" aria-label="Pagination">
+                {{#if (gt entity.page 1)}}
+                    <a class="prev" rel="prev" href="{{#if (eq entity.page 2)}}/{{else}}/{{subtract entity.page 1}}/{{/if}}">← Newer</a>
+                {{else}}
+                    <span class="prev disabled">← Newer</span>
+                {{/if}}
+
+                <ol class="pages">
+                    {{#each data.pageNumbers}}
+                        <li>
+                            {{#if (eq this.num ../entity.page)}}
+                                <span class="current" aria-current="page">{{this.num}}</span>
+                            {{else}}
+                                <a href="{{this.url}}">{{this.num}}</a>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ol>
+
+                {{#if (lt entity.page entity.pages)}}
+                    <a class="next" rel="next" href="/{{add entity.page 1}}/">Older →</a>
+                {{else}}
+                    <span class="next disabled">Older →</span>
+                {{/if}}
+            </nav>
+        {{/if}}
+    </div>
+    <script type="module" src="/live-reload.js"></script>
+</body>
+</html>

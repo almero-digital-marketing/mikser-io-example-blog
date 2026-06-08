@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{document.meta.title}} · B#tter Truth</title>
+    <link rel="stylesheet" href="/shared/styles/base.css">
+    <link rel="stylesheet" href="/shared/styles/components.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="byline">
+            <a href="/">← Back to index</a>
+        </nav>
+
+        <article>
+            <header>
+                <h1>{{document.meta.title}}</h1>
+                <div class="byline">
+                    by <strong>B#tter Truth</strong> · {{date document.meta.date 'MMMM D, YYYY'}}
+                    {{#if document.meta.status}}
+                        <span class="status-badge {{document.meta.status}}">{{document.meta.status}}</span>
+                    {{/if}}
+                </div>
+            </header>
+
+            <div class="body">
+                {{{markdown document.content}}}
+            </div>
+
+            {{#if document.meta.tags}}
+                <ul class="tag-list">
+                    {{#each document.meta.tags}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+        </article>
+    </div>
+    <script type="module" src="/live-reload.js"></script>
+</body>
+</html>

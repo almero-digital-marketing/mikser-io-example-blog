@@ -1,0 +1,18 @@
+{
+  "_comment": "REFERENCE ONLY — `npm run register-mcp` writes this entry for you automatically (idempotent, OS-aware, merges with existing config). This file documents what the script produces, plus an alternative shape if you'd rather have Claude launch its own mikser instance without a separate `npm start`.",
+  "_location_macos":   "~/Library/Application Support/Claude/claude_desktop_config.json",
+  "_location_windows": "%APPDATA%/Claude/claude_desktop_config.json",
+  "_location_linux":   "~/.config/Claude/claude_desktop_config.json",
+  "mcpServers": {
+    "mikser-io-example-blog": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "http://localhost:3001/mcp"
+      ],
+      "_note": "MCP is now plugin-activated (mikser-io-mcp listed in this project's mikser.config.js plugins array). The supergateway shim bridges Claude Desktop's stdio transport to mikser's HTTP transport at /mcp. Run `npm start` first so the server is up."
+    }
+  }
+}
