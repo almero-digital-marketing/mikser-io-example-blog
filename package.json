@@ -8,8 +8,8 @@
     "start":          "mikser --watch --server 3001 --debug",
     "build":          "mikser",
     "clean":          "mikser --clear",
-    "register-mcp":   "node scripts/register-mcp.js",
-    "unregister-mcp": "node scripts/register-mcp.js --unregister",
+    "register-mcp":   "mikser-io-mcp register claude",
+    "unregister-mcp": "mikser-io-mcp register claude --unregister",
     "postinstall":    "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
   },
   "dependencies": {

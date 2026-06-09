@@ -50,8 +50,14 @@ Other useful invocations:
 ```bash
 npm run register-mcp -- --dry-run     # preview without writing
 npm run register-mcp -- --force       # overwrite a differing existing entry
-npm run register-mcp -- --name=foo    # use a custom server label
 npm run unregister-mcp                # remove the entry
+```
+
+Under the hood, this calls `mikser-io-mcp register claude` (a bin shipped by the plugin). You can also invoke it directly:
+
+```bash
+npx mikser-io-mcp register claude
+npx mikser-io-mcp register claude --url http://localhost:3001/mcp
 ```
 
 **Important**: Claude connects to mikser over HTTP via `supergateway`. That means `npm start` has to be running for Claude to find the server. Order:
@@ -66,11 +72,35 @@ For reference, the entry the script writes looks like:
 ```json
 "mikser-io-example-blog": {
   "command": "npx",
-  "args": ["-y", "supergateway", "--sse", "http://localhost:3001/mcp"]
+  "args": ["-y", "supergateway", "--streamableHttp", "http://localhost:3001/mcp"]
 }
 ```
 
 There's no "Claude launches its own mikser" shortcut anymore — MCP ships as a plugin (`mikser-io-mcp`) loaded inside the mikser process, so the server has to be running before Claude can connect. Keep `npm start` open in one terminal.
+
+## Connect ChatGPT
+
+ChatGPT's MCP integration is server-side — no local config file to edit. The connector lives in your OpenAI account and OpenAI's servers connect to your MCP endpoint directly. That means **localhost won't work**; you need a publicly-reachable HTTPS URL.
+
+1. Expose mikser via a tunnel:
+
+   ```bash
+   ngrok http 3001
+   # or:
+   cloudflared tunnel --url http://localhost:3001
+   ```
+
+2. Print the copy-paste-ready connector details:
+
+   ```bash
+   npx mikser-io-mcp register chatgpt --url https://YOUR-TUNNEL.example/mcp
+   ```
+
+3. In ChatGPT (Desktop or web): Settings → Connectors → Advanced → Developer mode → Create. Paste the three fields the script prints.
+
+Notes:
+- ChatGPT Developer mode + custom MCP connectors are **beta** and require a Plus / Pro / Business / Enterprise / Edu account.
+- Connectors don't auto-enable per chat — toggle on each new conversation via the composer's Developer Mode tool picker.
 
 ## Try this
 
