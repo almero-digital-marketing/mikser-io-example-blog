@@ -17,6 +17,15 @@
             </p>
         </header>
 
+        {{#if data.searchEnabled}}
+        <section class="search" aria-label="Search essays">
+            <label for="search-input" class="visually-hidden">Search essays</label>
+            <input id="search-input" type="search" placeholder="Search essays — semantic, not just keyword…" autocomplete="off">
+            <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+            <ul id="search-results" class="search-results"></ul>
+        </section>
+        {{/if}}
+
         <hr>
 
         <h2>Essays{{#if (gt entity.pages 1)}} <small>· Page {{entity.page}} of {{entity.pages}}</small>{{/if}}</h2>
@@ -66,5 +75,8 @@
         {{/if}}
     </div>
     <script type="module" src="/live-reload.js"></script>
+    {{#if data.searchEnabled}}
+    <script type="module" src="/search.js"></script>
+    {{/if}}
 </body>
 </html>

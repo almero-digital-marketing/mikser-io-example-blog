@@ -13,6 +13,20 @@
 //   - schemas: zod schemas for posts + authors, surfaced to the agent
 //   - vector: semantic search over essays (requires OPENAI_API_KEY)
 
+// Surface a clear warning when vector search can't load. The blog
+// itself works without it — the search bar on the index page is
+// hidden and the rest of the site renders normally — but the operator
+// should know why search is off so they can set the env var if they
+// want it.
+if (!process.env.OPENAI_API_KEY) {
+    console.warn(
+        '\n⚠️  OPENAI_API_KEY not set — vector search is disabled.\n' +
+        '   The blog still builds and runs normally, but the semantic\n' +
+        '   search bar on the index page will be hidden. Set the env\n' +
+        '   var (e.g. export OPENAI_API_KEY=sk-...) and re-run to enable.\n'
+    )
+}
+
 export default async (runtime) => ({
     plugins: [
         // MCP MUST be first — its factory creates runtime.options.mcp
@@ -108,6 +122,10 @@ export default async (runtime) => ({
                     && e.id?.startsWith('/blog/')
                     && e.meta?.status === 'published',
                 map: e => ({
+                    // url is what the client-side search UI links to
+                    // when it renders a result. Match the {{this.url}}
+                    // shape the index template uses for the post list.
+                    url:     '/' + e.name,
                     title:   e.meta?.title,
                     summary: e.meta?.summary,
                     tags:    e.meta?.tags,
