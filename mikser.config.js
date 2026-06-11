@@ -1,5 +1,14 @@
 // mikser.config.js — blog example
 //
+// Load local .env first so the env-var checks below pick up values
+// from a project-local file without the operator needing to `export`
+// in their shell. Silent if .env doesn't exist — the example works
+// without any of the variables it documents.
+import { fileURLToPath } from 'node:url'
+try {
+    process.loadEnvFile(fileURLToPath(new URL('./.env', import.meta.url)))
+} catch { /* .env is optional */ }
+
 // Plugin set chosen to demonstrate the AI agent integration story:
 //   - mcp: AI agent transport — substrate + tools (must load FIRST so
 //     other plugins' onLoaded gates on runtime.options.mcp pass)
