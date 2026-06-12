@@ -5,21 +5,22 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start":          "mikser --watch --server 3001 --debug",
-    "build":          "mikser",
-    "clean":          "mikser --clear",
-    "register-mcp":   "mikser-io-mcp register claude",
+    "start": "mikser --watch --server 3001 --debug",
+    "build": "mikser",
+    "clean": "mikser --clear",
+    "register-mcp": "mikser-io-mcp register claude",
     "unregister-mcp": "mikser-io-mcp register claude --unregister",
-    "postinstall":    "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
+    "postinstall": "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
   },
   "dependencies": {
-    "mikser-io": "^8.3.7",
+    "express": "^5.2.1",
+    "mikser-io": "^8.3.9",
     "mikser-io-mcp": "^0.2.1",
     "mikser-io-render-markdown": "^3.2.0",
     "mikser-io-schemas": "^0.6.0",
-    "mikser-io-vector": "^1.4.0",
     "mikser-io-sdk-api": "^3.3.0",
-    "express": "^5.2.1",
+    "mikser-io-vector": "^1.4.2",
+    "sqlite-vec-darwin-arm64": "^0.1.9",
     "zod": "^4.4.3"
   },
   "license": "MIT",
