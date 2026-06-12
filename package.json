@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "express": "^5.2.1",
-    "mikser-io": "^8.3.9",
-    "mikser-io-mcp": "^0.2.1",
-    "mikser-io-render-markdown": "^3.2.0",
-    "mikser-io-schemas": "^0.6.0",
+    "mikser-io": "^9.0.0",
+    "mikser-io-mcp": "^1.0.0",
+    "mikser-io-render-markdown": "^4.0.0",
+    "mikser-io-schemas": "^1.0.0",
     "mikser-io-sdk-api": "^3.3.0",
-    "mikser-io-vector": "^1.4.2",
+    "mikser-io-vector": "^2.0.0",
     "sqlite-vec-darwin-arm64": "^0.1.9",
     "zod": "^4.4.3"
   },
