@@ -25,10 +25,11 @@ try {
 // their options at the call site. Top-level config blocks are gone.
 
 import {
-    documents, files, layouts, assets,
+    documents, files, assets,
     frontMatter, yaml, api, preview,
     renderHbs, renderFile,
 } from 'mikser-io'
+import { layouts }        from 'mikser-io-layouts'
 import { mcp }            from 'mikser-io-mcp'
 import { renderMarkdown } from 'mikser-io-render-markdown'
 import { vector }         from 'mikser-io-vector'
