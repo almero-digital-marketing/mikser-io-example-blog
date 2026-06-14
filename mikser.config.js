@@ -33,6 +33,7 @@ import { layouts }        from 'mikser-io-layouts'
 import { mcp }            from 'mikser-io-mcp'
 import { renderMarkdown } from 'mikser-io-render-markdown'
 import { vector }         from 'mikser-io-vector'
+import { openai }         from '@ai-sdk/openai'
 
 // Surface a clear warning when vector search can't load. The blog
 // itself works without it — the search bar on the index page is
@@ -90,7 +91,7 @@ export default async (runtime) => ({
         // everything else (preview-ui, refs, batch edit) still works.
         process.env.OPENAI_API_KEY && vector({
             client: 'better-sqlite3',
-            openai: { apiKey: process.env.OPENAI_API_KEY },
+            model: openai.embedding('text-embedding-3-small'),
             stores: {
                 essays: {
                     // Only index published posts — drafts and authors

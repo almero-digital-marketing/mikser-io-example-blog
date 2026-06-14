@@ -13,6 +13,7 @@
     "postinstall": "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.71",
     "express": "^5.2.1",
     "mikser-io": "^9.0.0",
     "mikser-io-mcp": "^1.0.0",
