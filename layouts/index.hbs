@@ -72,6 +72,9 @@
                     {{/if}}
                     <span class="meta">
                         {{date this.meta.date 'MMMM D, YYYY'}}
+                        {{#if this.author}}
+                            · by <a class="post-author" href="{{this.author.url}}">{{this.author.meta.name}}</a>
+                        {{/if}}
                         <span class="status-badge {{this.meta.status}}">{{this.meta.status}}</span>
                     </span>
                 </li>

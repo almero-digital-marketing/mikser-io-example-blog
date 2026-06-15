@@ -17,10 +17,6 @@ export async function load({ findEntities }) {
     // with no args, then .filter() in JS) would record a null dep and
     // invalidate on every mutation — see documentation/entities.md
     // "Query filters and incremental invalidation".
-    const allPosts = (await findEntities({ 'meta.layout': 'post' }))
-        .map(e => ({ ...e, url: '/' + e.name }))
-        .sort((a, b) => new Date(b.meta?.date ?? 0) - new Date(a.meta?.date ?? 0))
-
     // Authors come from TWO sources: documents/authors/*.yml (local
     // YAML) and the CSV at BLOG_AUTHORS_CSV (mikser-io-csv plugin
     // fans each row into an entity at /authors/<slug>). Both have
@@ -35,6 +31,30 @@ export async function load({ findEntities }) {
     const allAuthors = (await findEntities({ 'meta.layout': 'author' }))
         .map(e => ({ ...e, url: e.meta?.href ?? ('/' + e.name) }))
         .sort((a, b) => new Date(a.meta?.joined ?? 0) - new Date(b.meta?.joined ?? 0))
+
+    // Lookup map for resolving each post's $author ref string into the
+    // actual author entity. Indexed by BOTH id and meta.href so a post
+    // with `$author: /authors/bitter-truth` matches the local YAML
+    // (via meta.href) AND a post with `$author: /authors/dr-pragma`
+    // matches the CSV-sourced row (via id) — single map, dual lookup,
+    // no source-aware special-casing in the template.
+    const authorByRef = new Map()
+    for (const a of allAuthors) {
+        if (a.id)            authorByRef.set(a.id, a)
+        if (a.meta?.href)    authorByRef.set(a.meta.href, a)
+    }
+
+    const allPosts = (await findEntities({ 'meta.layout': 'post' }))
+        .map(e => ({
+            ...e,
+            url:    '/' + e.name,
+            // Attach the resolved author so the index template can
+            // show `<post title> · by <author>` without a per-post
+            // refs lookup. The map covers both naming conventions
+            // (id-shaped refs for CSV, meta.href-shaped refs for YAML).
+            author: authorByRef.get(e.meta?.$author) ?? null,
+        }))
+        .sort((a, b) => new Date(b.meta?.date ?? 0) - new Date(a.meta?.date ?? 0))
 
     const pages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE))
 
