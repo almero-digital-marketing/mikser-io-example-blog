@@ -16,6 +16,7 @@
     "@ai-sdk/openai": "^3.0.71",
     "express": "^5.2.1",
     "mikser-io": "^9.0.0",
+    "mikser-io-better-stack": "^1.0.0",
     "mikser-io-ngrok": "^1.0.0",
     "mikser-io-mcp": "^1.0.0",
     "mikser-io-render-markdown": "^4.0.0",

@@ -29,6 +29,7 @@ import {
     frontMatter, yaml, api, preview,
     renderHbs, renderFile,
 } from 'mikser-io'
+import { betterStack }    from 'mikser-io-better-stack'
 import { layouts }        from 'mikser-io-layouts'
 import { mcp }            from 'mikser-io-mcp'
 import { ngrok }          from 'mikser-io-ngrok'
@@ -58,6 +59,16 @@ export default async (runtime) => ({
         // webhook receivers) pick it up automatically. Skips cleanly
         // when --server is off or NGROK_AUTHTOKEN is unset.
         ngrok(),
+
+        // betterStack ships every mikser log line to Better Stack
+        // Telemetry (via @logtail/pino) AND sends a heartbeat to
+        // Better Stack Uptime so the dashboard knows mikser is alive.
+        // Either surface is independent — set only BETTERSTACK_SOURCE_TOKEN
+        // for logs, only BETTERSTACK_HEARTBEAT_TOKEN for uptime, or
+        // both. With neither set, the plugin no-ops with an info log
+        // line and doesn't affect anything else. Included here as a
+        // smoke check that the no-token case is harmless.
+        betterStack(),
 
         // MCP MUST be first — its factory creates runtime.options.mcp
         // synchronously so plugins listed after it can register tools
