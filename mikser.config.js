@@ -49,7 +49,51 @@ if (!process.env.OPENAI_API_KEY) {
     )
 }
 
+// ngrok public URL resolution.
+//
+// When NGROK_AUTHTOKEN is set in .env AND mikser is running with
+// --server, open an ngrok tunnel pointing at the local server port and
+// surface its public URL via the engine's `url` config. Downstream
+// plugins that gate on https-capable URLs (post-email tracking links,
+// future webhook plugins like mikser-io-gdrive's push notifications,
+// MCP-UI handler callbacks, preview share links) automatically pick
+// it up because the engine resolves runtime.options.url at onLoad
+// from runtime.config.url (this file).
+//
+// No token? No tunnel. The blog still builds and runs locally — plugins
+// that need external reachability log an "URL not set" debug line and
+// fall back to local-only behavior (polling, no absolute links, etc.).
+//
+// Sequencing: this runs at config-load time. The tunnel forwards traffic
+// to the configured port BEFORE the server starts listening on it.
+// ngrok's local agent doesn't care — it just shovels TCP to the port
+// once a listener comes up at onInitialized.
+async function resolveNgrokUrl(runtime) {
+    if (!runtime.options.server) return null
+    if (!process.env.NGROK_AUTHTOKEN) {
+        console.log('🌐 NGROK_AUTHTOKEN not set — running on localhost only')
+        return null
+    }
+    const port = typeof runtime.options.server === 'number'
+        ? runtime.options.server
+        : 3001
+    try {
+        const ngrok = await import('@ngrok/ngrok')
+        const listener = await ngrok.forward({
+            addr: port,
+            authtoken: process.env.NGROK_AUTHTOKEN,
+        })
+        const url = listener.url()
+        console.log(`🌐 ngrok tunnel: ${url} → localhost:${port}`)
+        return url
+    } catch (err) {
+        console.warn(`⚠️  ngrok tunnel failed: ${err.message} — falling back to localhost only`)
+        return null
+    }
+}
+
 export default async (runtime) => ({
+    url: await resolveNgrokUrl(runtime),
     plugins: [
         // MCP MUST be first — its factory creates runtime.options.mcp
         // synchronously so plugins listed after it can register tools
