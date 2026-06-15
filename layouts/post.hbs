@@ -17,10 +17,21 @@
             <header>
                 <h1>{{document.meta.title}}</h1>
                 <div class="byline">
+                    {{!--
+                        document.meta is the projected form (projectMeta
+                        in mikser-io/src/utils.js strips the `$` prefix
+                        per ADR-0007), so the source's `$author` ref
+                        surfaces here as `document.meta.author`. Using
+                        the unprojected `document.meta.$author` would
+                        render as undefined → opaque "Unknown" fallback
+                        when the sidecar fails to resolve the ref.
+                    --}}
                     {{#if data.author}}
                         by <a href="{{data.author.meta.href}}{{#unless data.author.meta.href}}/{{data.author.name}}{{/unless}}"><strong>{{data.author.meta.name}}</strong></a>{{#if data.author.meta.role}} · <span class="author-role">{{data.author.meta.role}}</span>{{/if}}
+                    {{else if document.meta.author}}
+                        by <strong><code>{{document.meta.author}}</code></strong> <small>(unresolved — author entity hasn't loaded yet; remote sources may still be polling)</small>
                     {{else}}
-                        by <strong>{{#if document.meta.$author}}{{document.meta.$author}}{{else}}Unknown{{/if}}</strong>
+                        by <strong>anonymous</strong>
                     {{/if}}
                     · {{date document.meta.date 'MMMM D, YYYY'}}
                     {{#if document.meta.status}}
