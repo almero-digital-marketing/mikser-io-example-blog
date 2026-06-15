@@ -1,7 +1,7 @@
 ---
 title: One round trip beats ten
 date: 2026-04-09
-$author: /authors/bitter-truth
+$author: /authors/dr-pragma
 layout: post
 summary: For an agent, every round trip is an inference. Ten round trips to fetch an article and its author and the author's organization is ten model calls. The right query interface answers the same question in one call. The cost difference is multiplicative.
 tags: [api, performance, agents]

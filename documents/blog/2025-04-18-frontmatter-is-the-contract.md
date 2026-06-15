@@ -1,7 +1,7 @@
 ---
 title: Frontmatter is the contract
 date: 2025-04-18
-$author: /authors/bitter-truth
+$author: /authors/dr-pragma
 layout: post
 summary: A few lines of YAML at the top of a file is one of the most underrated programming surfaces in software. It's portable, queryable, self-describing, and human-editable. Most systems treat it as a sidekick. It's not.
 tags: [content, conventions]

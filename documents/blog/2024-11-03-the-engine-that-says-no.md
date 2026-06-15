@@ -1,7 +1,7 @@
 ---
 title: The engine that says no
 date: 2024-11-03
-$author: /authors/bitter-truth
+$author: /authors/c-assandra
 layout: post
 summary: Most engines grow. Mikser's growth has been the absence of growth. The discipline is to keep saying no until the case is overwhelming. The cost is permanent surface area, not lines of code.
 tags: [discipline, architecture]

@@ -28,6 +28,38 @@
 
         <hr>
 
+        {{#if data.authors.length}}
+        <section class="authors" aria-labelledby="authors-heading">
+            <h2 id="authors-heading">Authors</h2>
+            <p class="authors-note">
+                B#tter Truth's contributors. Names with character substitution mark
+                this as a collaboration between a human maintainer and AI agents.
+                {{!--
+                    Live-update demo: bitter-truth is a local YAML file
+                    (documents/authors/bitter-truth.yml); the others are
+                    polled from a Google Sheet. Edit a cell in the sheet
+                    and this section reflects it within 30s — same
+                    pipeline, no special-casing.
+                --}}
+            </p>
+            <ul class="author-list">
+                {{#each data.authors}}
+                    <li>
+                        <a class="name" href="{{this.url}}">{{this.meta.name}}</a>
+                        {{#if this.meta.role}}
+                            <span class="role">{{this.meta.role}}</span>
+                        {{/if}}
+                        {{#if this.meta.joined}}
+                            <span class="joined">joined {{date this.meta.joined 'MMMM YYYY'}}</span>
+                        {{/if}}
+                    </li>
+                {{/each}}
+            </ul>
+        </section>
+
+        <hr>
+        {{/if}}
+
         <h2>Essays{{#if (gt entity.pages 1)}} <small>· Page {{entity.page}} of {{entity.pages}}</small>{{/if}}</h2>
 
         <ul class="post-list">

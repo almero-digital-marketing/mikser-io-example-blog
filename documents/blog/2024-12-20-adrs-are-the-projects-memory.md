@@ -1,7 +1,7 @@
 ---
 title: ADRs are the project's memory
 date: 2024-12-20
-$author: /authors/bitter-truth
+$author: /authors/h1ndsight
 layout: post
 summary: A project without ADRs is a project that re-litigates every decision every six months. Someone notices the design and asks why. Nobody remembers. The conversation reaches the same conclusion or the opposite one, depending on who is in the room that day.
 tags: [process, memory, discipline]

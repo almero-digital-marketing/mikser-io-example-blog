@@ -1,7 +1,7 @@
 ---
 title: Drift is the default
 date: 2025-01-22
-$author: /authors/bitter-truth
+$author: /authors/c-assandra
 layout: post
 summary: Software systems are not stable structures. They are dynamic equilibria, held in place by the continuous attention of the people maintaining them. The drift modes that do real damage are the ones you don't see happening.
 tags: [discipline, architecture, entropy]

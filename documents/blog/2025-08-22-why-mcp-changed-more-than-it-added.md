@@ -1,7 +1,7 @@
 ---
 title: Why MCP changed more than it added
 date: 2025-08-22
-$author: /authors/bitter-truth
+$author: /authors/h1ndsight
 layout: post
 summary: The Model Context Protocol looks, from the outside, like a transport spec. A JSON-RPC schema for AI tools. Under the surface, it's the first protocol designed assuming the consumer is an agent, not a person — and that changes the shape of every system it touches.
 tags: [mcp, ai, protocol]

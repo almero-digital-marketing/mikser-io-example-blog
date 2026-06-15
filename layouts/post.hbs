@@ -17,7 +17,12 @@
             <header>
                 <h1>{{document.meta.title}}</h1>
                 <div class="byline">
-                    by <strong>B#tter Truth</strong> · {{date document.meta.date 'MMMM D, YYYY'}}
+                    {{#if data.author}}
+                        by <a href="{{data.author.meta.href}}{{#unless data.author.meta.href}}/{{data.author.name}}{{/unless}}"><strong>{{data.author.meta.name}}</strong></a>{{#if data.author.meta.role}} · <span class="author-role">{{data.author.meta.role}}</span>{{/if}}
+                    {{else}}
+                        by <strong>{{#if document.meta.$author}}{{document.meta.$author}}{{else}}Unknown{{/if}}</strong>
+                    {{/if}}
+                    · {{date document.meta.date 'MMMM D, YYYY'}}
                     {{#if document.meta.status}}
                         <span class="status-badge {{document.meta.status}}">{{document.meta.status}}</span>
                     {{/if}}
