@@ -38,6 +38,8 @@ import { vector }         from 'mikser-io-vector'
 import { csv }            from 'mikser-io-csv'
 import { openai }         from '@ai-sdk/openai'
 
+const BLOG_AUTHORS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRMZbHc-vSxLwiV_muhABJ_VoQk6BUWgVeqQE3GQSfU377VFdMgIlhDhHcJaCtPpD-TJwXZ6vbP8ko8/pub?output=csv'
+
 // Surface a clear warning when vector search can't load. The blog
 // itself works without it — the search bar on the index page is
 // hidden and the rest of the site renders normally — but the operator
@@ -154,9 +156,9 @@ export default async (runtime) => ({
         // still link correctly; posts that reference a CSV-only author
         // get refs.broken warnings (the system tells you what's missing
         // without crashing).
-        process.env.BLOG_AUTHORS_CSV && csv({
+        csv({
             match: {
-                [process.env.BLOG_AUTHORS_CSV]: {
+                [BLOG_AUTHORS_CSV]: {
                     idColumn:   'slug',
                     collection: 'documents',
                     prefix:     '/authors/',
