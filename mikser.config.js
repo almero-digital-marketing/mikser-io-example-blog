@@ -168,7 +168,7 @@ export default async (runtime) => ({
                     meta: {
                         layout: 'author',
                     },
-                    pollIntervalMs: 300_000,    // 5 min — authors don't change often
+                    pollIntervalMs: 30_000,    // 30s — fast feedback for the demo
                 },
             },
         }),
