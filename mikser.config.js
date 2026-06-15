@@ -35,6 +35,7 @@ import { mcp }            from 'mikser-io-mcp'
 import { ngrok }          from 'mikser-io-ngrok'
 import { renderMarkdown } from 'mikser-io-render-markdown'
 import { vector }         from 'mikser-io-vector'
+import { csv }            from 'mikser-io-csv'
 import { openai }         from '@ai-sdk/openai'
 
 // Surface a clear warning when vector search can't load. The blog
@@ -131,6 +132,43 @@ export default async (runtime) => ({
                         tags:    e.meta?.tags,
                         content: e.content,
                     }),
+                },
+            },
+        }),
+
+        // ── Cross-source demo ──────────────────────────────────────────
+        // Authors live in TWO places:
+        //   - documents/authors/bitter-truth.yml — local YAML, version-
+        //     controlled with the blog itself.
+        //   - The CSV at BLOG_AUTHORS_CSV — remote spreadsheet hosted
+        //     anywhere (Google Sheets "Publish to web", GitHub raw,
+        //     S3 — anything that returns text/csv). Editor team can
+        //     manage these authors without touching the repo.
+        //
+        // Posts reference authors as `$author: /authors/<slug>` — refs
+        // resolve by meta.href, so a post can name either source's
+        // author with no plumbing.
+        //
+        // Skipped cleanly when the env var isn't set: the local author
+        // (bitter-truth) still renders; existing posts authored by them
+        // still link correctly; posts that reference a CSV-only author
+        // get refs.broken warnings (the system tells you what's missing
+        // without crashing).
+        process.env.BLOG_AUTHORS_CSV && csv({
+            match: {
+                [process.env.BLOG_AUTHORS_CSV]: {
+                    idColumn:   'slug',
+                    collection: 'documents',
+                    prefix:     '/authors/',
+                    coerce:     true,
+                    // Defaults merged into every row's meta. The CSV
+                    // stays clean (just author data); the layout
+                    // dispatch + href routing are operator-config, not
+                    // per-row redundancy.
+                    meta: {
+                        layout: 'author',
+                    },
+                    pollIntervalMs: 300_000,    // 5 min — authors don't change often
                 },
             },
         }),
