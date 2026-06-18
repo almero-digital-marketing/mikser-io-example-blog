@@ -1,0 +1,6 @@
+# Carrier entity for the rendered nginx facade config — the nginx
+# counterpart of caddy.yml. The nginx layout reads the same route
+# registry and renders an nginx server block; `destination: nginx.conf`
+# in the layout lands the output at out/nginx.conf.
+layout: nginx
+title: nginx facade config
