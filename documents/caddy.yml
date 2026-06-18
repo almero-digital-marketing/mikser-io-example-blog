@@ -1,0 +1,7 @@
+# Carrier entity for the rendered Caddy facade config. It has no content
+# of its own — the caddyfile layout reads the route registry and renders
+# the Caddyfile. `layout: caddyfile` opts out of autoLayouts and pins
+# this doc to that one layout; the layout's `destination: Caddyfile`
+# frontmatter lands the output at out/Caddyfile.
+layout: caddyfile
+title: Caddy facade config
