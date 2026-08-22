@@ -27,7 +27,7 @@ try {
 import {
     documents, files, assets,
     frontMatter, yaml, api, preview,
-    renderHbs, renderFile,
+    renderHbs, fileHelpers,
 } from 'mikser-io'
 import { betterStack }    from 'mikser-io-better-stack'
 import { layouts }        from 'mikser-io-layouts'
@@ -85,7 +85,7 @@ export default async (runtime) => ({
         yaml(),
         renderHbs(),
         renderMarkdown(),
-        renderFile(),
+        fileHelpers(),
 
         // api: exposes the catalog over HTTP and SSE. The rendered
         // public pages use mikser-io-sdk-api via /api/public/entities/
