@@ -10,7 +10,7 @@
     "clean": "mikser --clear",
     "register-mcp": "mikser-io-mcp register claude",
     "unregister-mcp": "mikser-io-mcp register claude --unregister",
-    "postinstall": "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared"
+    "postinstall": "test -d files/shared || git clone --depth=1 https://github.com/almero-digital-marketing/mikser-io-examples-shared files/shared || echo 'mikser-io-examples-shared is unavailable; the example runs without its shared assets'"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.71",
@@ -23,7 +23,6 @@
     "mikser-io-schemas": "^1.0.0",
     "mikser-io-sdk-api": "^3.3.0",
     "mikser-io-vector": "^2.0.0",
-    "sqlite-vec-darwin-arm64": "^0.1.9",
     "zod": "^4.4.3"
   },
   "license": "MIT",
