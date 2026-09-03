@@ -10,8 +10,8 @@ try {
 } catch { /* .env is optional */ }
 
 // Plugin set chosen to demonstrate the AI agent integration story:
-//   - mcp: AI agent transport — substrate + tools (must load FIRST so
-//     other plugins' onLoaded gates on runtime.options.mcp pass)
+//   - mcp: AI agent transport — substrate + tools (any position; plugins
+//     register tools against the engine and ask core for the substrate)
 //   - front-matter + yaml: parse the YAML at the top of every .md / .yml
 //   - layouts + renderHbs + renderMarkdown + render-file: render essays
 //     to HTML. render-file gives us {{readFile}} for inlining shared CSS
@@ -73,9 +73,11 @@ export default async (runtime) => ({
         // smoke check that the no-token case is harmless.
         betterStack(),
 
-        // MCP MUST be first — its factory creates runtime.options.mcp
-        // synchronously so plugins listed after it can register tools
-        // at their own onLoaded with `if (!runtime.options.mcp) return`.
+        // Position no longer matters. This used to have to be FIRST: other
+        // plugins registered tools by reaching into runtime.options.mcp, so
+        // moving it down the list made their tools silently disappear.
+        // Tools now register against the engine and mcp binds them into each
+        // session, so nothing here depends on the order.
         mcp(),
         documents({ documentsFolder: 'documents' }),
         files({ filesFolder: 'files' }),
