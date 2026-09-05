@@ -7,3 +7,4 @@ runtime/
 
 # files/shared is cloned by postinstall — not committed to this repo
 files/shared/
+mikser.data.sqlite*
